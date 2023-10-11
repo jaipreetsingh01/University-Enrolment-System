@@ -8,14 +8,14 @@ public class University {
 
     public static void main(String[] args) {
         (new University()).displayMenu();
-
     }
 
+    // CONSTRUCTOR FOR UNIVERSITY, HAVE TO ADD FILE STUFF HERE
     public University() {
         admin = new Admin();
         students = new ArrayList<>();
         subjects = new ArrayList<>();
-    } // Contructor
+    }
 
     private void registerStudentData() {
         // verify against data & verify pattern
@@ -28,8 +28,6 @@ public class University {
     private void saveStudentData() {
     }
 
-    private boolean verifyCredentials(String email, String password) {
-        return true; // FOR NOW
     }
 
     private void updatePassword(String newPass) {
@@ -40,49 +38,53 @@ public class University {
     }
 
     private void deleteStudentData() {
-
     }
 
     private void deleteAllStudentData() {
 
     }
 
+    // Return character entered by user
     private char readChoice() {
-        // if (menu == "main") {
-        // System.out.print("University System: (A)dmin, (S)tudent or X");
-        // return In.nextChar();
-        // } else if (menu == "admin") {
-        // System.out.print("University System: (A)dmin, (S)tudent or X");
-        // return In.nextChar();
-        // } else if (menu == "student") {
-        // System.out.print("University System: (A)dmin, (S)tudent or X");
-        // return In.nextChar();
-        // } else
         return In.nextChar();
     }
 
-    private String readEmail() {
-        System.out.print("Email: ");
-        return In.nextLine();
-        // verify pattern & return error if does not patch
-    }
-
-    private String readPassword() {
-        System.out.print("Password: ");
-        return In.nextLine();
-        // verify pattern & return error if does not patch
-    }
-
+    // Read the email and call verify pattern to match pattern
+    // return student object if there is a match
     private Student findStudent() {
         return new Student("ab", "ab", "ab", 1);
     }
 
+    // RETURN TRUE/FALSE depending if pattern is correct
+    private boolean verifyCredentials(String email, String password) {
+    }
+
+    // INCOMPLETE FUCNTION - DISPLAY STUDENT MENU
     private void studentMenu() {
+        System.out.print(Colors.BLUE + "Student System (l/r/x): " + Colors.RESET);
+        char c;
+        while ((c = readChoice()) != 'x') {
+            switch (c) {
+                case 'l':
+                    // implement student login
+                    break;
+                case 'r':
+                    // implement student register
+                    break;
+                default:
+                    // Help menu
+                    break;
+            }
+            System.out.print(Colors.BLUE + "Student System (l/r/x): " + Colors.RESET);
+        }
+        System.out.println(Colors.YELLOW + "Thank You" + Colors.RESET);
 
     }
 
+    // INCOMPLETE FUNCTION - DISPAYS THE MENU FOR ADMINS (LATER TO BE MOVED TO ADMIN
+    // CLASS)
     private void adminMenu() {
-        System.out.print("Admin System (c/g/p/r/s/x): ");
+        System.out.print(Colors.BLUE + "Admin System (c/g/p/r/s/x): " + Colors.RESET);
         char c;
         while ((c = readChoice()) != 'x') {
             switch (c) {
@@ -105,13 +107,13 @@ public class University {
                     // Help menu
                     break;
             }
-            System.out.print("Admin System (c/g/p/r/s/x): ");
+            System.out.print(Colors.BLUE + "Admin System (c/g/p/r/s/x): " + Colors.RESET);
         }
         System.out.println(Colors.YELLOW + "Thank You" + Colors.RESET);
 
     }
 
-    // Author : xyz , Function : Displays the (home) Menu
+    // Function : Displays the (home) Menu
     public void displayMenu() {
         System.out.println();
         char c;
