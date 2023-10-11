@@ -28,8 +28,6 @@ public class University {
     private void saveStudentData() {
     }
 
-    }
-
     private void updatePassword(String newPass) {
     }
 
@@ -57,6 +55,7 @@ public class University {
 
     // RETURN TRUE/FALSE depending if pattern is correct
     private boolean verifyCredentials(String email, String password) {
+        return true; // For now to avoid error
     }
 
     // INCOMPLETE FUCNTION - DISPLAY STUDENT MENU
