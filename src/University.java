@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class University {
@@ -6,10 +7,14 @@ public class University {
     private Admin admin;
 
     public static void main(String[] args) {
+        (new University()).displayMenu();
 
     }
 
     public University() {
+        admin = new Admin();
+        students = new ArrayList<>();
+        subjects = new ArrayList<>();
     } // Contructor
 
     private void registerStudentData() {
@@ -43,7 +48,16 @@ public class University {
     }
 
     private char readChoice() {
-        System.out.print("University System: (A)dmin, (S)tudent or X");
+        // if (menu == "main") {
+        // System.out.print("University System: (A)dmin, (S)tudent or X");
+        // return In.nextChar();
+        // } else if (menu == "admin") {
+        // System.out.print("University System: (A)dmin, (S)tudent or X");
+        // return In.nextChar();
+        // } else if (menu == "student") {
+        // System.out.print("University System: (A)dmin, (S)tudent or X");
+        // return In.nextChar();
+        // } else
         return In.nextChar();
     }
 
@@ -60,32 +74,62 @@ public class University {
     }
 
     private Student findStudent() {
-        // returns student after matching
+        return new Student("ab", "ab", "ab", 1);
     }
 
-    private void studentLogin() {
+    private void studentMenu() {
 
     }
 
-    private void adminLogin() {
-    }
-
-    public void displayMenu() {
-        System.out.println();
+    private void adminMenu() {
+        System.out.print("Admin System (c/g/p/r/s/x): ");
         char c;
-        while ((c = readChoice()) != 'X') {
+        while ((c = readChoice()) != 'x') {
             switch (c) {
-                case 'A':
-                    adminLogin();
+                case 'c':
+                    // clear database file
                     break;
-                case 'S':
-                    studentLogin();
+                case 'g':
+                    // group students
+                    break;
+                case 'p':
+                    // partition students
+                    break;
+                case 'r':
+                    // Remove student
+                    break;
+                case 's':
+                    // show
                     break;
                 default:
                     // Help menu
                     break;
             }
-
+            System.out.print("Admin System (c/g/p/r/s/x): ");
         }
+        System.out.println(Colors.YELLOW + "Thank You" + Colors.RESET);
+
+    }
+
+    // Author : xyz , Function : Displays the (home) Menu
+    public void displayMenu() {
+        System.out.println();
+        char c;
+        System.out.print(Colors.BLUE + "University System: (A)dmin, (S)tudent or X: " + Colors.RESET);
+        while ((c = readChoice()) != 'X') {
+            switch (c) {
+                case 'A':
+                    adminMenu();
+                    break;
+                case 'S':
+                    studentMenu();
+                    break;
+                default:
+                    // Help menu
+                    break;
+            }
+            System.out.print(Colors.BLUE + "University System: (A)dmin, (S)tudent or X: " + Colors.RESET);
+        }
+        System.out.println(Colors.YELLOW + "Thank You" + Colors.RESET);
     }
 }
