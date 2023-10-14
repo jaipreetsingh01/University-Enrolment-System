@@ -47,15 +47,42 @@ public class University {
         return In.nextChar();
     }
 
-    // Read the email and call verify pattern to match pattern
-    // return student object if there is a match
-    private Student findStudent() {
+    // Read the email & run a match against list of current students
+    // return student object if there is a match or null if no match.
+    private Student findStudent(String email) {
         return new Student("ab", "ab", "ab", 1);
     }
 
     // RETURN TRUE/FALSE depending if pattern is correct
     private boolean verifyCredentials(String email, String password) {
-        return true; // For now to avoid error
+        return isValidEmail(email) && isValidPassword(password);
+    }
+
+    private static boolean isValidEmail(String email) {
+        String emailPattern = "^[a-zA-Z]+\\.[a-zA-Z]+@university\\.com$";
+        return email.matches(emailPattern);
+    }
+
+    private static boolean isValidPassword(String password) {
+        String passwordPattern = "^[A-Z][a-zA-Z]{5,}\\d{3,}$";
+        return password.matches(passwordPattern);
+    }
+
+    private void studentRegister() {
+        System.out.println("Student Sign Up");
+        System.out.print("Email: ");
+        String email = In.nextLine();
+        System.out.print("Password: ");
+        String password = In.nextLine();
+
+        if (verifyCredentials(email, password)) {
+            System.out.print("Name: ");
+            String name = In.nextLine();
+            students.add(new Student(name, email, password, 111111));
+        } else {
+            System.out.println("Incorrect email or password format");
+        }
+
     }
 
     // INCOMPLETE FUCNTION - DISPLAY STUDENT MENU
@@ -68,7 +95,7 @@ public class University {
                     // implement student login
                     break;
                 case 'r':
-                    // implement student register
+                    studentRegister();
                     break;
                 default:
                     // Help menu
