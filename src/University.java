@@ -1,7 +1,9 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-public class University {
+public class University implements Serializable {
     private List<Student> students;
     private List<Subject> subjects;
     private Admin admin;
@@ -10,31 +12,28 @@ public class University {
         (new University()).displayMenu();
     }
 
-    // Constructor for University, File Stuff needs to be added here.
+    // Constructor for University
     public University() {
         admin = new Admin();
-        subjects = new ArrayList<>();
+        // subjects = new ArrayList<>();
         Data.init();
+        students = Data.readStudents();
     }
 
-    private void generateID() { // MG
-    }
+    // private String generateID() {
+    // String randomID = UUID.randomUUID().toString(); // create random ID in string
+    // format
+    // return randomID;
+    // }
 
-    private void saveStudentData() {
-    }
-
-    private void updatePassword(String newPass) {
-    }
-
-    private void updateStudentData() {
-
-    }
-
-    private void deleteStudentData() {
+    private void deleteStudentData(Student s) {
+        students = Data.readStudents();
+        students.remove(s);
     }
 
     private void deleteAllStudentData() {
-
+        students = Data.readStudents();
+        Data.deleteAllStudentData(students);
     }
 
     // Return character entered by user
@@ -42,11 +41,15 @@ public class University {
         return In.nextChar();
     }
 
-    // Incomplete for now - Read the email & run a match against list of current
-    // students
     // return student object if there is a match or null if no match.
-    private Student findStudent(String email) {
-        return new Student("ab", "ab", "ab", 1);
+    private Student findStudent(String email, String password) {
+        students = Data.readStudents();
+        for (Student s : students) {
+            if (s.match(email, password)) {
+                return s;
+            }
+        }
+        return null;
     }
 
     // RETURN TRUE/FALSE depending if pattern is correct
@@ -73,22 +76,67 @@ public class University {
         System.out.print("Password: ");
         String password = In.nextLine();
 
+        students = Data.readStudents();
         if (verifyCredentials(email, password)) {
-
-            // The fucntionality which matches existing students with database & stops
-            // execution is pending here
-
             // Functionality which will generate random ID is also pending here, for now its
             // 111111
-            System.out.println("Email and password form acceptable");
-            System.out.print("Name: ");
-            String name = In.nextLine();
-            System.out.println("Enrolling student - add name here");
-            students.add(new Student(name, email, password, 111111));
+            Student curStudent = findStudent(email, password);
+            if (curStudent == null) {
+                System.out.println("Email and password form acceptable");
+                System.out.print("Name: ");
+                String name = In.nextLine();
+                System.out.println("Enrolling student - add name here");
+                students.add(new Student(name, email, password, "111111"));
+                Data.saveStudentData(students);
+            } else
+                System.out.println("Already exists");
+
         } else {
             System.out.println("Incorrect email or password format");
         }
 
+    }
+
+    public void studentLogin() {
+        System.out.println("Student Sign In");
+        System.out.print("Email: ");
+        String email = In.nextLine();
+        System.out.print("Password: ");
+        String password = In.nextLine();
+
+        if (verifyCredentials(email, password)) {
+            Student curStudent = findStudent(email, password);
+            if (curStudent != null)
+                studentCourseMenu(curStudent);
+            else
+                System.out.println("Student not found");
+        } else
+            System.out.println("Password / email format issue");
+    }
+
+    public void studentCourseMenu(Student s) {
+        System.out.print(Colors.BLUE + "Student Course Menu(c/e/r/s/x): " + Colors.RESET);
+        char c;
+        while ((c = readChoice()) != 'x') {
+            switch (c) {
+                case 'c':
+                    s.updatePassword();
+                    break;
+                case 'e':
+                    // Enroll
+                    break;
+                case 'r':
+                    // Remove
+                    break;
+                case 's':
+                    // Show
+                    break;
+                default:
+                    // Help menu
+                    break;
+            }
+            System.out.print(Colors.BLUE + "Admin System (c/g/p/r/s/x): " + Colors.RESET);
+        }
     }
 
     // This Function is incomplete & might move to student class
@@ -98,7 +146,7 @@ public class University {
         while ((c = readChoice()) != 'x') {
             switch (c) {
                 case 'l':
-                    // implement student login
+                    studentLogin();
                     break;
                 case 'r':
                     studentRegister();
@@ -113,21 +161,6 @@ public class University {
 
     }
 
-    public void studentLogin() {
-        System.out.println("Student Sign In");
-        System.out.print("Email: ");
-        String email = In.nextLine();
-        System.out.print("Password: ");
-        String password = In.nextLine();
-
-        // if(stuff matches and password matches)
-        studentCourseMenu();
-    }
-
-    public void studentCourseMenu() {
-
-    }
-
     // This Function is incomplete & later to be moved to admin class
     private void adminMenu() {
         System.out.print(Colors.BLUE + "Admin System (c/g/p/r/s/x): " + Colors.RESET);
@@ -135,7 +168,7 @@ public class University {
         while ((c = readChoice()) != 'x') {
             switch (c) {
                 case 'c':
-                    // clear database file
+                    deleteAllStudentData();
                     break;
                 case 'g':
                     // group students
@@ -160,7 +193,7 @@ public class University {
 
     // Function : Displays the (home) Menu
     public void displayMenu() {
-        System.out.println();
+        System.out.println(students);
         char c;
         System.out.print(Colors.BLUE + "University System: (A)dmin, (S)tudent or X: " + Colors.RESET);
         while ((c = readChoice()) != 'X') {

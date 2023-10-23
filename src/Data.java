@@ -1,15 +1,8 @@
 //NOTE : This class could later be converted to StudentData.java if need need seperate databasr fir subjects - to discuss
 
+import java.io.*;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Data {
     private static String filename = "students.data";
@@ -37,23 +30,24 @@ public class Data {
         }
     }
 
-    public static void saveStudentData(List<Student> students, File file) {
-        try (FileOutputStream fileOut = new FileOutputStream(file)) {
+    public static void saveStudentData(List<Student> students) {
+        try (FileOutputStream fileOut = new FileOutputStream(filename)) {
             ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
             objOut.writeObject(students);
             objOut.close();
-
+            fileOut.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static List<Student> readStudents(File file) {
-        try (FileInputStream fileIn = new FileInputStream(file)) {
+    public static List<Student> readStudents() {
+        List<Student> students = null;
+        try (FileInputStream fileIn = new FileInputStream(filename)) {
             ObjectInputStream objIn = new ObjectInputStream(fileIn);
-            List<Student> students = (List<Student>) objIn.readObject();
+            students = (List<Student>) objIn.readObject();
             objIn.close();
-
+            fileIn.close();
             return students;
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,8 +55,8 @@ public class Data {
         return null;
     }
 
-    public static void deleteAllStudentData(List<Student> students, File file) {
-        try (FileOutputStream fileOut = new FileOutputStream(file)) {
+    public static void deleteAllStudentData(List<Student> students) {
+        try (FileOutputStream fileOut = new FileOutputStream(filename)) {
             ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
             objOut.writeObject(new ArrayList<>());
             students.clear();
