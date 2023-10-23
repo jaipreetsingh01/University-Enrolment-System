@@ -10,19 +10,14 @@ public class University {
         (new University()).displayMenu();
     }
 
-    // CONSTRUCTOR FOR UNIVERSITY, HAVE TO ADD FILE STUFF HERE
+    // Constructor for University, File Stuff needs to be added here.
     public University() {
         admin = new Admin();
-        students = new ArrayList<>();
         subjects = new ArrayList<>();
+        Data.init();
     }
 
-    private void registerStudentData() {
-        // verify against data & verify pattern
-        // add student through contrcutor
-    }
-
-    private void generateID() {
+    private void generateID() { // MG
     }
 
     private void saveStudentData() {
@@ -47,7 +42,8 @@ public class University {
         return In.nextChar();
     }
 
-    // Read the email & run a match against list of current students
+    // Incomplete for now - Read the email & run a match against list of current
+    // students
     // return student object if there is a match or null if no match.
     private Student findStudent(String email) {
         return new Student("ab", "ab", "ab", 1);
@@ -58,11 +54,13 @@ public class University {
         return isValidEmail(email) && isValidPassword(password);
     }
 
+    // This Function returns true if the email is correctly formatted
     private static boolean isValidEmail(String email) {
         String emailPattern = "^[a-zA-Z]+\\.[a-zA-Z]+@university\\.com$";
         return email.matches(emailPattern);
     }
 
+    // This function returns true if the password is correctly formatted
     private static boolean isValidPassword(String password) {
         String passwordPattern = "^[A-Z][a-zA-Z]{5,}\\d{3,}$";
         return password.matches(passwordPattern);
@@ -76,8 +74,16 @@ public class University {
         String password = In.nextLine();
 
         if (verifyCredentials(email, password)) {
+
+            // The fucntionality which matches existing students with database & stops
+            // execution is pending here
+
+            // Functionality which will generate random ID is also pending here, for now its
+            // 111111
+            System.out.println("Email and password form acceptable");
             System.out.print("Name: ");
             String name = In.nextLine();
+            System.out.println("Enrolling student - add name here");
             students.add(new Student(name, email, password, 111111));
         } else {
             System.out.println("Incorrect email or password format");
@@ -85,7 +91,7 @@ public class University {
 
     }
 
-    // INCOMPLETE FUCNTION - DISPLAY STUDENT MENU
+    // This Function is incomplete & might move to student class
     private void studentMenu() {
         System.out.print(Colors.BLUE + "Student System (l/r/x): " + Colors.RESET);
         char c;
@@ -107,8 +113,22 @@ public class University {
 
     }
 
-    // INCOMPLETE FUNCTION - DISPAYS THE MENU FOR ADMINS (LATER TO BE MOVED TO ADMIN
-    // CLASS)
+    public void studentLogin() {
+        System.out.println("Student Sign In");
+        System.out.print("Email: ");
+        String email = In.nextLine();
+        System.out.print("Password: ");
+        String password = In.nextLine();
+
+        // if(stuff matches and password matches)
+        studentCourseMenu();
+    }
+
+    public void studentCourseMenu() {
+
+    }
+
+    // This Function is incomplete & later to be moved to admin class
     private void adminMenu() {
         System.out.print(Colors.BLUE + "Admin System (c/g/p/r/s/x): " + Colors.RESET);
         char c;
@@ -135,9 +155,8 @@ public class University {
             }
             System.out.print(Colors.BLUE + "Admin System (c/g/p/r/s/x): " + Colors.RESET);
         }
-        System.out.println(Colors.YELLOW + "Thank You" + Colors.RESET);
-
     }
+    // System.out.println(Colors.YELLOW + "Thank You" + Colors.RESET);
 
     // Function : Displays the (home) Menu
     public void displayMenu() {
