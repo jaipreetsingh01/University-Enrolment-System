@@ -15,17 +15,17 @@ public class Subject implements Serializable {
     }
 
     public String getID() {
-        return ID;
+        return this.ID;
 
     }
 
     public int getMark() {
-        return mark;
+        return this.mark;
 
     }
 
     public String getGrade() {
-        return grade;
+        return this.grade;
     }
 
     private String generateRandomID() {
@@ -55,11 +55,14 @@ public class Subject implements Serializable {
 
     }
 
-    @Override
-    public String toString() {
-
-        return String.format("Subject ID: %03d\nMark: %d\nGrade: %s", ID, mark, grade);
-
+    public boolean match(String ID) {
+        return (this.ID.equals(ID));
     }
 
+    @Override
+    public String toString() {
+        // System.out.printf("Subject ID: %s -- Mark = %d -- Grade = %s", this.ID,
+        // this.mark, this.grade);
+        return String.format("Subject ID: %s -- Mark = %d -- Grade = %s", this.ID, this.mark, this.grade);
+    }
 }

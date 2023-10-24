@@ -26,6 +26,23 @@ public class Student implements Serializable {
         return this.password;
     }
 
+    public String nameGetter() {
+        return this.name;
+    }
+
+    public String IDGetter() {
+        return this.studentID;
+
+    }
+
+    public float getAverageMarks() {
+        float average = 0;
+        for (Subject s : this.enrolledSubjects) {
+            average += s.getMark();
+        }
+        return average;
+    }
+
     public void updatePassword() {
         System.out.print("New Password: ");
         String newPass = In.nextLine();
@@ -33,9 +50,9 @@ public class Student implements Serializable {
     }
 
     public void enrolSubject() {
-        if (enrolledSubjects.size() < 4) {
+        if (this.enrolledSubjects.size() < 4) {
             Subject subject = new Subject();
-            enrolledSubjects.add(subject);
+            this.enrolledSubjects.add(subject);
             System.out.println("Enrolled in the subject-: " + subject.getID());
             System.out.println("Enrolled in " + this.enrolledSubjects.size() + " out of 4 subjects");
         } else
@@ -44,13 +61,38 @@ public class Student implements Serializable {
         // REMEBER TO CALL DATA SAVE FROM UNIVERSITY
     }
 
+    private Subject findSubject(String ID) {
+        for (Subject sub : this.enrolledSubjects) {
+            if (sub.match(ID)) {
+                return sub;
+            }
+        }
+        return null;
+    }
+
+    public void withdrawSubject() {
+        if (this.enrolledSubjects.size() > 1) {
+            System.out.print("ID: ");
+            String ID = In.nextLine();
+
+            Subject subjectToRemove = this.findSubject(ID);
+            if (subjectToRemove != null) {
+                this.enrolledSubjects.remove(subjectToRemove);
+                System.out.println("Removed");
+            } else
+                System.out.println("No subject with that ID");
+
+        } else
+            System.out.println("Minimum 1 Subject");
+    }
+
     public void viewEnrollment() {
         if (enrolledSubjects.isEmpty()) {
             System.out.println("You are not enrolled in any subjects.");
         } else {
             System.out.println("Enrolled in the following subjects:");
             for (Subject subject : enrolledSubjects) {
-                System.out.println("-" + subject.getID());
+                System.out.println(subject.toString());
             }
         }
     }

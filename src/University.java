@@ -1,6 +1,7 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class University implements Serializable {
@@ -20,10 +21,24 @@ public class University implements Serializable {
         students = Data.readStudents();
     }
 
+    private static final String Chars = "0123456789";
+
     // private String generateID() {
-    // String randomID = UUID.randomUUID().toString(); // create random ID in string
-    // format
+    // {
+    // // Define the minimum length of the ID
+    // int minLength = 6;
+    // // Generate the random ID
+    // StringBuilder randomID = new StringBuilder();
+    // Random random = new Random();
+    // // Ensure the ID has at least 6 characters
+    // while (randomID.length() < minLength) {
+    // int index = random.nextInt(Chars.length());
+    // randomID.append(Chars.charAt(index));
+    // }
+
     // return randomID;
+
+    // }
     // }
 
     private void deleteStudentData(Student s) {
@@ -68,6 +83,64 @@ public class University implements Serializable {
         String passwordPattern = "^[A-Z][a-zA-Z]{5,}\\d{3,}$";
         return password.matches(passwordPattern);
     }
+
+    // private static void groupByGrade() {
+    // List<Student> students = Data.readStudents();
+    // String[] gradeLetters = { "HD", "D", "C", "P", "F" };
+
+    // System.out.println("Grade Grouping");
+    // for (String gradeLetter : gradeLetters) { // Grouped by grade ("HD", "D",
+    // "C", "P", "F")
+    // for (Student student : students) {
+    // if (getLetter(student.getGrade()).equals(gradeLetter)) {
+    // System.out.println(gradeLetter + " --> [" + student.nameGetter() + " :: " +
+    // student.IDGetter()
+    // + " --> GRADE: " + gradeLetter + " - MARK: " + student.getGrade() + "]");
+    // }
+    // }
+    // }
+    // }
+
+    // private static String getLetter(double grade) {
+    // if (grade >= 85)
+    // return "HD";
+    // if (grade >= 75)
+    // return "D";
+    // if (grade >= 65)
+    // return "C";
+    // if (grade >= 50)
+    // return "P";
+    // return "F";
+    // }
+
+    // private static void partitionPassFail() {
+    // List<Student> students = Data.readStudents();
+    // List<Student> studentPassList = new ArrayList<>();
+    // List<Student> studentFailList = new ArrayList<>();
+
+    // for (Student student : students) { // Partitioned as pass or fail
+    // if (student.getGrade() >= 50) {
+    // studentPassList.add(student);
+    // } else {
+    // studentFailList.add(student);
+    // }
+    // }
+    // System.out.println("PASS/FAIL Partition");
+    // System.out.print("FAIL --> ");
+    // for (Student student : studentFailList) {
+    // System.out.print("[" + student.nameGetter() + " :: " + student.IDGetter() + "
+    // --> GRADE: "
+    // + getLetter(student.getGrade()) + " - MARK: " + student.getGrade() + "], ");
+    // }
+    // System.out.println();
+    // System.out.print("PASS --> ");
+    // for (Student student : studentPassList) {
+    // System.out.print("[" + student.nameGetter() + " :: " + student.IDGetter() + "
+    // --> GRADE: "
+    // + getLetter(student.getGrade()) + " - MARK: " + student.getGrade() + "], ");
+    // }
+    // System.out.println();
+    // }
 
     private void studentRegister() {
         System.out.println("Student Sign Up");
@@ -121,21 +194,24 @@ public class University implements Serializable {
             switch (c) {
                 case 'c':
                     s.updatePassword();
+                    Data.saveStudentData(students);
                     break;
                 case 'e':
-                    // Enroll
+                    s.enrolSubject();
+                    Data.saveStudentData(students);
                     break;
                 case 'r':
-                    // Remove
+                    s.withdrawSubject();
+                    Data.saveStudentData(students);
                     break;
                 case 's':
-                    // Show
+                    s.viewEnrollment();
                     break;
                 default:
                     // Help menu
                     break;
             }
-            System.out.print(Colors.BLUE + "Admin System (c/g/p/r/s/x): " + Colors.RESET);
+            System.out.print(Colors.BLUE + "Student Course Menu(c/e/r/s/x): " + Colors.RESET);
         }
     }
 
@@ -169,12 +245,13 @@ public class University implements Serializable {
             switch (c) {
                 case 'c':
                     deleteAllStudentData();
+                    Data.saveStudentData(students);
                     break;
                 case 'g':
-                    // group students
+                    // groupByGrade();
                     break;
                 case 'p':
-                    // partition students
+                    // partitionPassFail();
                     break;
                 case 'r':
                     // Remove student
