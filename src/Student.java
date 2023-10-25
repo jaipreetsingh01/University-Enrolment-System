@@ -9,6 +9,8 @@ public class Student implements Serializable {
     private String password;
     private String studentID;
     private List<Subject> enrolledSubjects;
+    private float averageMarks;
+    private String averageGrade;
 
     public Student(String name, String email, String password, String studentID) {
         this.name = name;
@@ -35,12 +37,24 @@ public class Student implements Serializable {
 
     }
 
-    public float getAverageMarks() {
+    public List<Subject> getSubjectList() {
+        return this.enrolledSubjects;
+    }
+
+    public float getterAverageMarks() {
+        return this.averageMarks;
+    }
+
+    public String getterAverageGrade() {
+        return this.averageGrade;
+    }
+
+    private void calculateAverageMarks() {
         float average = 0;
         for (Subject s : this.enrolledSubjects) {
             average += s.getMark();
         }
-        return average;
+        this.averageMarks = average / this.enrolledSubjects.size();
     }
 
     public void updatePassword() {
@@ -49,12 +63,29 @@ public class Student implements Serializable {
         this.password = newPass;
     }
 
+    private void calculateAverageGrade() {
+        this.calculateAverageMarks();
+        if (this.averageMarks >= 85) {
+            this.averageGrade = "HD"; // High Distinction
+        } else if (this.averageMarks >= 75) {
+            this.averageGrade = "D"; // Distinction
+        } else if (this.averageMarks >= 65) {
+            this.averageGrade = "CR"; // Credit
+        } else if (this.averageMarks >= 50) {
+            this.averageGrade = "P"; // Pass
+        } else {
+            this.averageGrade = "F"; // Fail
+        }
+    }
+
     public void enrolSubject() {
         if (this.enrolledSubjects.size() < 4) {
             Subject subject = new Subject();
             this.enrolledSubjects.add(subject);
             System.out.println("Enrolled in the subject-: " + subject.getID());
             System.out.println("Enrolled in " + this.enrolledSubjects.size() + " out of 4 subjects");
+            this.calculateAverageMarks();
+            this.calculateAverageGrade();
         } else
             System.out.println("Students are allowed to enroll in 4 subjects only");
 
@@ -79,6 +110,8 @@ public class Student implements Serializable {
             if (subjectToRemove != null) {
                 this.enrolledSubjects.remove(subjectToRemove);
                 System.out.println("Removed");
+                this.calculateAverageMarks();
+                this.calculateAverageGrade();
             } else
                 System.out.println("No subject with that ID");
 

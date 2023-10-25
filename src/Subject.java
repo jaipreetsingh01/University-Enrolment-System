@@ -39,7 +39,7 @@ public class Subject implements Serializable {
         return random.nextInt(76) + 25;
     }
 
-    private String determineGrade(int mark) {
+    public String determineGrade(int mark) {
         if (mark >= 85) {
             grade = "HD"; // High Distinction
         } else if (mark >= 75) {
