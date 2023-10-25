@@ -9,7 +9,7 @@ public class Student implements Serializable {
     private String password;
     private String studentID;
     private List<Subject> enrolledSubjects;
-    private float averageMarks;
+    private float averageMarks = 0;
     private String averageGrade;
 
     public Student(String name, String email, String password, String studentID) {
@@ -18,6 +18,7 @@ public class Student implements Serializable {
         this.password = password;
         this.studentID = studentID;
         this.enrolledSubjects = new ArrayList<>();
+        calculateAverageGrade();
     }
 
     public String studentEmailGetter() {
@@ -178,5 +179,16 @@ public class Student implements Serializable {
 
     public boolean match(String email, String password) {
         return (this.email.equals(email) && this.password.equals(password));
+    }
+
+    public boolean matchbyID(String ID) {
+        return (this.studentID.equals(ID));
+    }
+
+    public String toString() {
+        calculateAverageGrade();
+        calculateAverageMarks();
+        return String.format("Student name: %s -- average Mark = %.2f -- average Grade = %s", this.name,
+                this.averageMarks, this.averageGrade);
     }
 }

@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class University implements Serializable {
     private List<Student> students;
-    private List<Subject> subjects;
+    // private List<Subject> subjects;
     private Admin admin;
 
     public static void main(String[] args) {
@@ -16,34 +16,44 @@ public class University implements Serializable {
     // Constructor for University
     public University() {
         admin = new Admin();
-        // subjects = new ArrayList<>();
         Data.init();
         students = Data.readStudents();
     }
 
-    private static final String Chars = "0123456789";
+    private String generateID() {
+        {
+            String Chars = "0123456789";
 
-    // private String generateID() {
-    // {
-    // // Define the minimum length of the ID
-    // int minLength = 6;
-    // // Generate the random ID
-    // StringBuilder randomID = new StringBuilder();
-    // Random random = new Random();
-    // // Ensure the ID has at least 6 characters
-    // while (randomID.length() < minLength) {
-    // int index = random.nextInt(Chars.length());
-    // randomID.append(Chars.charAt(index));
-    // }
+            // Define the minimum length of the ID
+            int minLength = 6;
+            // Generate the random ID
+            StringBuilder randomID = new StringBuilder();
+            Random random = new Random();
+            // Ensure the ID has at least 6 characters
+            while (randomID.length() < minLength) {
+                int index = random.nextInt(Chars.length());
+                randomID.append(Chars.charAt(index));
+            }
+            return randomID.toString();
 
-    // return randomID;
-
-    // }
-    // }
+        }
+    }
 
     private void deleteStudentData(Student s) {
-        students = Data.readStudents();
         students.remove(s);
+        Data.saveStudentData(students);
+    }
+
+    private Student findStudentbyID() {
+        System.out.print("id: ");
+        String studentID = In.nextLine();
+        students = Data.readStudents();
+        for (Student s : students) {
+            if (s.matchbyID(studentID)) {
+                return s;
+            }
+        }
+        return null;
     }
 
     private void deleteAllStudentData() {
@@ -86,7 +96,7 @@ public class University implements Serializable {
 
     private static void groupByGrade() {
         List<Student> students = Data.readStudents();
-        String[] gradeLetters = { "HD", "D", "C", "P", "F" };
+        String[] gradeLetters = { "HD", "D", "CR", "P", "F" };
         System.out.println("Grade Grouping");
         for (String g : gradeLetters) {
             for (Student s : students) {
@@ -145,7 +155,7 @@ public class University implements Serializable {
                 System.out.print("Name: ");
                 String name = In.nextLine();
                 System.out.println("Enrolling student - add name here");
-                students.add(new Student(name, email, password, "111111"));
+                students.add(new Student(name, email, password, generateID()));
                 Data.saveStudentData(students);
             } else
                 System.out.println("Already exists");
@@ -240,10 +250,14 @@ public class University implements Serializable {
                     partitionPassFail();
                     break;
                 case 'r':
-                    // Remove student
+                    Student toRemove = findStudentbyID();
+                    deleteStudentData(toRemove);
                     break;
                 case 's':
-                    // show
+                    students = Data.readStudents();
+                    for (Student s : students) {
+                        System.out.println(s.toString());
+                    }
                     break;
                 default:
                     // Help menu
@@ -256,7 +270,6 @@ public class University implements Serializable {
 
     // Function : Displays the (home) Menu
     public void displayMenu() {
-        System.out.println(students);
         char c;
         System.out.print(Colors.BLUE + "University System: (A)dmin, (S)tudent or X: " + Colors.RESET);
         while ((c = readChoice()) != 'X') {
