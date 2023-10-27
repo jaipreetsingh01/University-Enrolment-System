@@ -61,6 +61,16 @@ public class Student implements Serializable {
     public void updatePassword() {
         System.out.print("New Password: ");
         String newPass = In.nextLine();
+
+        System.out.print("Confirm Password: ");
+        String confrimNewPass = In.nextLine();
+
+        while (newPass != confrimNewPass) {
+            System.out.println("Password does not match - try again");
+            System.out.print("Confirm Password: ");
+            confrimNewPass = In.nextLine();
+        }
+
         this.password = newPass;
     }
 
@@ -110,11 +120,12 @@ public class Student implements Serializable {
             Subject subjectToRemove = this.findSubject(ID);
             if (subjectToRemove != null) {
                 this.enrolledSubjects.remove(subjectToRemove);
-                System.out.println("Removed");
+                System.out.println("Dropping Subject " + ID);
+                System.out.println("You are now enrolled in " + this.enrolledSubjects.size() + " out of 4 Subjects");
                 this.calculateAverageMarks();
                 this.calculateAverageGrade();
             } else
-                System.out.println("No subject with that ID");
+                System.out.println("Subject with that ID does not exist");
 
         } else
             System.out.println("Minimum 1 Subject");
@@ -122,9 +133,9 @@ public class Student implements Serializable {
 
     public void viewEnrollment() {
         if (enrolledSubjects.isEmpty()) {
-            System.out.println("You are not enrolled in any subjects.");
+            System.out.println("Showing 0 Subjects");
         } else {
-            System.out.println("Enrolled in the following subjects:");
+            System.out.println("Showing " + this.enrolledSubjects.size() + " Subjects");
             for (Subject subject : enrolledSubjects) {
                 System.out.println(subject.toString());
             }
@@ -188,7 +199,7 @@ public class Student implements Serializable {
     public String toString() {
         calculateAverageGrade();
         calculateAverageMarks();
-        return String.format("Student name: %s -- average Mark = %.2f -- average Grade = %s", this.name,
-                this.averageMarks, this.averageGrade);
+        return String.format("Student name :: %s --> Email: %s", this.name,
+                this.email);
     }
 }

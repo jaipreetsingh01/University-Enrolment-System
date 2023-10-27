@@ -48,10 +48,13 @@ public class University implements Serializable {
         System.out.print("id: ");
         String studentID = In.nextLine();
         students = Data.readStudents();
+
         for (Student s : students) {
             if (s.matchbyID(studentID)) {
+                System.out.println("Removing Student " + studentID + " Account");
                 return s;
-            }
+            } else
+                System.out.println("Student " + studentID + " does not exist");
         }
         return null;
     }
@@ -59,6 +62,7 @@ public class University implements Serializable {
     private void deleteAllStudentData() {
         students = Data.readStudents();
         Data.deleteAllStudentData(students);
+        System.out.println("Students data cleared");
     }
 
     // Return character entered by user
@@ -97,12 +101,17 @@ public class University implements Serializable {
     private static void groupByGrade() {
         List<Student> students = Data.readStudents();
         String[] gradeLetters = { "HD", "D", "CR", "P", "F" };
-        System.out.println("Grade Grouping");
-        for (String g : gradeLetters) {
-            for (Student s : students) {
-                if (s.getterAverageGrade().equals(g))
-                    System.out.println(g + " --> [" + s.nameGetter() + " :: " +
-                            s.IDGetter() + " --> GRADE: " + g + " - MARK: " + s.getterAverageMarks() + "]");
+
+        if (students.isEmpty())
+            System.out.println("Nothing to display");
+        else {
+            System.out.println("Grade Grouping");
+            for (String g : gradeLetters) {
+                for (Student s : students) {
+                    if (s.getterAverageGrade().equals(g))
+                        System.out.println(g + " --> [" + s.nameGetter() + " :: " +
+                                s.IDGetter() + " --> GRADE: " + g + " - MARKS: " + s.getterAverageMarks() + "]");
+                }
 
             }
         }
@@ -150,16 +159,16 @@ public class University implements Serializable {
             // Functionality which will generate random ID is also pending here, for now its
             // 111111
             Student curStudent = findStudent(email, password);
+            System.out.println("Email and password form acceptable");
+            System.out.print("Name: ");
+            String name = In.nextLine();
             if (curStudent == null) {
-                System.out.println("Email and password form acceptable");
-                System.out.print("Name: ");
-                String name = In.nextLine();
-                System.out.println("Enrolling student - add name here");
+
+                System.out.println("Enrolling student " + name);
                 students.add(new Student(name, email, password, generateID()));
                 Data.saveStudentData(students);
             } else
-                System.out.println("Already exists");
-
+                System.out.println("Student " + name + " already exists");
         } else {
             System.out.println("Incorrect email or password format");
         }
@@ -178,9 +187,9 @@ public class University implements Serializable {
             if (curStudent != null)
                 studentCourseMenu(curStudent);
             else
-                System.out.println("Student not found");
+                System.out.println("Student does not exist");
         } else
-            System.out.println("Password / email format issue");
+            System.out.println("Incorrect email or password format");
     }
 
     public void studentCourseMenu(Student s) {
@@ -240,8 +249,21 @@ public class University implements Serializable {
         while ((c = readChoice()) != 'x') {
             switch (c) {
                 case 'c':
-                    deleteAllStudentData();
-                    Data.saveStudentData(students);
+                    System.out.println("Are you sure you want to clear the databse (Y)es/ (N)o");
+                    char charac = In.nextChar();
+
+                    while (charac != 'Y' || charac != 'N') {
+                        if (charac == 'Y')
+                            deleteAllStudentData();
+                        else if (charac == 'N')
+                            break;
+                        else {
+                            System.out.println("Y - Yes | N - No");
+                            System.out.println("Are you sure you want to clear the databse (Y)es/ (N)o");
+                            charac = In.nextChar();
+                        }
+                    }
+                    // Data.saveStudentData(students);
                     break;
                 case 'g':
                     groupByGrade();
@@ -255,8 +277,13 @@ public class University implements Serializable {
                     break;
                 case 's':
                     students = Data.readStudents();
-                    for (Student s : students) {
-                        System.out.println(s.toString());
+                    if (students.isEmpty())
+                        System.out.println("Nothing to display");
+                    else {
+                        System.out.println("Student List");
+                        for (Student s : students) {
+                            System.out.println(s.toString());
+                        }
                     }
                     break;
                 default:

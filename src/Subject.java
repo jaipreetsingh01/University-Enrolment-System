@@ -63,6 +63,6 @@ public class Subject implements Serializable {
     public String toString() {
         // System.out.printf("Subject ID: %s -- Mark = %d -- Grade = %s", this.ID,
         // this.mark, this.grade);
-        return String.format("Subject ID: %s -- Mark = %d -- Grade = %s", this.ID, this.mark, this.grade);
+        return String.format("[ Subject::%s -- Mark = %d -- Grade = %s ]", this.ID, this.mark, this.grade);
     }
 }
