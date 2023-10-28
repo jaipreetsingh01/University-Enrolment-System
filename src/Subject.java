@@ -16,7 +16,6 @@ public class Subject implements Serializable {
 
     public String getID() {
         return this.ID;
-
     }
 
     public int getMark() {

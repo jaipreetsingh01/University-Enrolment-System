@@ -9,7 +9,7 @@ public class Student implements Serializable {
     private String password;
     private String studentID;
     private List<Subject> enrolledSubjects;
-    private float averageMarks = 0;
+    private float averageMarks;
     private String averageGrade;
 
     public Student(String name, String email, String password, String studentID) {
@@ -18,6 +18,7 @@ public class Student implements Serializable {
         this.password = password;
         this.studentID = studentID;
         this.enrolledSubjects = new ArrayList<>();
+        this.averageMarks = 0;
         calculateAverageGrade();
     }
 
@@ -58,22 +59,6 @@ public class Student implements Serializable {
         this.averageMarks = average / this.enrolledSubjects.size();
     }
 
-    public void updatePassword() {
-        System.out.print("New Password: ");
-        String newPass = In.nextLine();
-
-        System.out.print("Confirm Password: ");
-        String confrimNewPass = In.nextLine();
-
-        while (newPass != confrimNewPass) {
-            System.out.println("Password does not match - try again");
-            System.out.print("Confirm Password: ");
-            confrimNewPass = In.nextLine();
-        }
-
-        this.password = newPass;
-    }
-
     private void calculateAverageGrade() {
         this.calculateAverageMarks();
         if (this.averageMarks >= 85) {
@@ -89,16 +74,34 @@ public class Student implements Serializable {
         }
     }
 
+    public void updatePassword() {
+        System.out.print(Colors.YELLOW + "Updating Password: " + Colors.RESET);
+        System.out.print("New Password: ");
+        String newPass = In.nextLine();
+
+        System.out.print("Confirm Password: ");
+        String confrimNewPass = In.nextLine();
+
+        while (!newPass.equals(confrimNewPass)) {
+            System.out.println(Colors.RED + "Password does not match - try again" + Colors.RESET);
+            System.out.print("Confirm Password: ");
+            confrimNewPass = In.nextLine();
+        }
+
+        this.password = newPass;
+    }
+
     public void enrolSubject() {
         if (this.enrolledSubjects.size() < 4) {
             Subject subject = new Subject();
             this.enrolledSubjects.add(subject);
-            System.out.println("Enrolled in the subject-: " + subject.getID());
-            System.out.println("Enrolled in " + this.enrolledSubjects.size() + " out of 4 subjects");
+            System.out.println(Colors.YELLOW + "Enrolling in subject-" + subject.getID() + Colors.RESET);
+            System.out.println(Colors.YELLOW + "You are now enrolled in " + this.enrolledSubjects.size()
+                    + " out of 4 subjects" + Colors.RESET);
             this.calculateAverageMarks();
             this.calculateAverageGrade();
         } else
-            System.out.println("Students are allowed to enroll in 4 subjects only");
+            System.out.println(Colors.RED + "Students are allowed to enroll in 4 subjects only" + Colors.RESET);
 
         // REMEBER TO CALL DATA SAVE FROM UNIVERSITY
     }
@@ -112,84 +115,40 @@ public class Student implements Serializable {
         return null;
     }
 
+    public boolean match(String email, String password) {
+        return (this.email.equals(email) && this.password.equals(password));
+    }
+
     public void withdrawSubject() {
         if (this.enrolledSubjects.size() > 1) {
-            System.out.print("ID: ");
+            System.out.print("Remove subject by ID: ");
             String ID = In.nextLine();
 
             Subject subjectToRemove = this.findSubject(ID);
             if (subjectToRemove != null) {
                 this.enrolledSubjects.remove(subjectToRemove);
-                System.out.println("Dropping Subject " + ID);
-                System.out.println("You are now enrolled in " + this.enrolledSubjects.size() + " out of 4 Subjects");
+                System.out.println(Colors.YELLOW + "Dropping Subject-" + ID + Colors.RESET);
+                System.out.println(Colors.YELLOW + "You are now enrolled in " + this.enrolledSubjects.size()
+                        + " out of 4 Subjects" + Colors.RESET);
                 this.calculateAverageMarks();
                 this.calculateAverageGrade();
             } else
-                System.out.println("Subject with that ID does not exist");
+                System.out.println(Colors.RED + "Subject with that ID does not exist" + Colors.RESET);
 
         } else
-            System.out.println("Minimum 1 Subject");
+            System.out
+                    .println(Colors.RED + "Students are required to be enrolled in minimum one subject" + Colors.RESET);
     }
 
     public void viewEnrollment() {
         if (enrolledSubjects.isEmpty()) {
-            System.out.println("Showing 0 Subjects");
+            System.out.println(Colors.YELLOW + "Showing 0 Subjects" + Colors.RESET);
         } else {
-            System.out.println("Showing " + this.enrolledSubjects.size() + " Subjects");
+            System.out.println(Colors.YELLOW + "Showing " + this.enrolledSubjects.size() + " Subjects" + Colors.RESET);
             for (Subject subject : enrolledSubjects) {
                 System.out.println(subject.toString());
             }
         }
-    }
-
-    /*
-     * public void enrolSubject(Subject subject) {
-     * if (enrolledSubjects.size() < 4) {
-     * enrolledSubjects.add(subject);
-     * System.out.println("You have enrolled in the subject");
-     * // System.out.println("You are enrolled in " +
-     * toString(enrolledSubjects.size()));
-     * // need to insert subject name code
-     * } else
-     * {
-     * System.out.println("Students are allowed to enrol in 4 subjects only");
-     * }
-     * }
-     */
-
-    /*
-     * 
-     * public void viewEnrollment() {​​
-     * if (enrolledSubjects.isEmpty()) {​​
-     * System.out.println(name + " is not enrolled in any subjects.");
-     * }​​ else {​​
-     * System.out.println(name + " is enrolled in the following subjects:");
-     * for (Subject subject : enrolledSubjects) {​​
-     * System.out.println("- " + subject.getSubjectName());
-     * }​​
-     * }​​
-     * }​ ​
-     * 
-     * public void withdrawSubject(Subject subject) {​​
-     * // add Remove Subject by ID: and input ID
-     * enrolledSubjects.remove(subject);
-     * }
-     * 
-     * class Subject {
-     * private String subjectName;
-     * 
-     * public Subject(String subjectName) {
-     * this.subjectName = subjectName;
-     * }
-     * 
-     * public String getSubjectName() {
-     * return subjectName;
-     * }
-     * }​
-     */
-
-    public boolean match(String email, String password) {
-        return (this.email.equals(email) && this.password.equals(password));
     }
 
     public boolean matchbyID(String ID) {
@@ -199,7 +158,7 @@ public class Student implements Serializable {
     public String toString() {
         calculateAverageGrade();
         calculateAverageMarks();
-        return String.format("Student name :: %s --> Email: %s", this.name,
+        return String.format("%s :: %s --> Email: %s", this.name, this.studentID,
                 this.email);
     }
 }

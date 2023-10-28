@@ -2,7 +2,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 public class University implements Serializable {
     private List<Student> students;
@@ -45,24 +44,25 @@ public class University implements Serializable {
     }
 
     private Student findStudentbyID() {
-        System.out.print("id: ");
+        System.out.print("Remove by ID: ");
         String studentID = In.nextLine();
         students = Data.readStudents();
 
         for (Student s : students) {
             if (s.matchbyID(studentID)) {
-                System.out.println("Removing Student " + studentID + " Account");
+                System.out.println(Colors.YELLOW + "Removing Student " + studentID + " Account" + Colors.RESET);
                 return s;
-            } else
-                System.out.println("Student " + studentID + " does not exist");
+            }
         }
+        System.out.println(Colors.RED + "Student " + studentID + " does not exist" + Colors.RESET);
         return null;
     }
 
     private void deleteAllStudentData() {
         students = Data.readStudents();
+        System.out.println(Colors.YELLOW + "Clearing Student Database" + Colors.RESET);
         Data.deleteAllStudentData(students);
-        System.out.println("Students data cleared");
+
     }
 
     // Return character entered by user
@@ -105,7 +105,7 @@ public class University implements Serializable {
         if (students.isEmpty())
             System.out.println("Nothing to display");
         else {
-            System.out.println("Grade Grouping");
+            System.out.println(Colors.YELLOW + "Grade Grouping" + Colors.RESET);
             for (String g : gradeLetters) {
                 for (Student s : students) {
                     if (s.getterAverageGrade().equals(g))
@@ -119,10 +119,13 @@ public class University implements Serializable {
 
     private static void partitionPassFail() {
         List<Student> students = Data.readStudents();
+
         List<Student> studentPassList = new ArrayList<>();
         List<Student> studentFailList = new ArrayList<>();
+
         ArrayList<String> PassList = new ArrayList<>();
         ArrayList<String> FailList = new ArrayList<>();
+
         for (Student s : students) { // Partitioned as pass or fail
             if (s.getterAverageMarks() >= 50) {
                 studentPassList.add(s);
@@ -131,7 +134,7 @@ public class University implements Serializable {
                     studentFailList.add(s);
             }
         }
-        System.out.println("PASS/FAIL Partition");
+        System.out.println(Colors.YELLOW + "PASS/FAIL Partition" + Colors.RESET);
 
         for (Student student : studentFailList) {
             FailList.add(student.nameGetter() + " :: " + student.IDGetter() + "--> GRADE: "
@@ -148,7 +151,7 @@ public class University implements Serializable {
     }
 
     private void studentRegister() {
-        System.out.println("Student Sign Up");
+        System.out.println(Colors.GREEN + "Student Sign Up" + Colors.RESET);
         System.out.print("Email: ");
         String email = In.nextLine();
         System.out.print("Password: ");
@@ -159,41 +162,43 @@ public class University implements Serializable {
             // Functionality which will generate random ID is also pending here, for now its
             // 111111
             Student curStudent = findStudent(email, password);
-            System.out.println("Email and password form acceptable");
-            System.out.print("Name: ");
-            String name = In.nextLine();
-            if (curStudent == null) {
+            System.out.println(Colors.YELLOW + "Email and password form acceptable" + Colors.RESET);
 
-                System.out.println("Enrolling student " + name);
+            if (curStudent == null) {
+                System.out.print("Name: ");
+                String name = In.nextLine();
+                System.out.println(Colors.YELLOW + "Enrolling student " + name + Colors.RESET);
                 students.add(new Student(name, email, password, generateID()));
                 Data.saveStudentData(students);
             } else
-                System.out.println("Student " + name + " already exists");
+                System.out
+                        .println(Colors.RED + "Student " + curStudent.nameGetter() + " already exists" + Colors.RESET);
         } else {
-            System.out.println("Incorrect email or password format");
+            System.out.println(Colors.RED + "Incorrect email or password format" + Colors.RESET);
         }
 
     }
 
     public void studentLogin() {
-        System.out.println("Student Sign In");
+        System.out.println(Colors.GREEN + "Student Sign In" + Colors.RESET);
         System.out.print("Email: ");
         String email = In.nextLine();
         System.out.print("Password: ");
         String password = In.nextLine();
 
         if (verifyCredentials(email, password)) {
+            System.out.println(Colors.YELLOW + "Email and password form acceptable" + Colors.RESET);
             Student curStudent = findStudent(email, password);
             if (curStudent != null)
                 studentCourseMenu(curStudent);
             else
-                System.out.println("Student does not exist");
+                System.out.println(Colors.RED + "Student does not exist" + Colors.RESET);
         } else
-            System.out.println("Incorrect email or password format");
+            System.out.println(Colors.RED + "Incorrect email or password format" + Colors.RESET);
     }
 
     public void studentCourseMenu(Student s) {
-        System.out.print(Colors.BLUE + "Student Course Menu(c/e/r/s/x): " + Colors.RESET);
+        System.out.print(Colors.CYAN + "Student Course Menu(c/e/r/s/x): " + Colors.RESET);
         char c;
         while ((c = readChoice()) != 'x') {
             switch (c) {
@@ -216,13 +221,13 @@ public class University implements Serializable {
                     // Help menu
                     break;
             }
-            System.out.print(Colors.BLUE + "Student Course Menu(c/e/r/s/x): " + Colors.RESET);
+            System.out.print(Colors.CYAN + "Student Course Menu(c/e/r/s/x): " + Colors.RESET);
         }
     }
 
     // This Function is incomplete & might move to student class
     private void studentMenu() {
-        System.out.print(Colors.BLUE + "Student System (l/r/x): " + Colors.RESET);
+        System.out.print(Colors.CYAN + "Student System (l/r/x): " + Colors.RESET);
         char c;
         while ((c = readChoice()) != 'x') {
             switch (c) {
@@ -236,7 +241,7 @@ public class University implements Serializable {
                     // Help menu
                     break;
             }
-            System.out.print(Colors.BLUE + "Student System (l/r/x): " + Colors.RESET);
+            System.out.print(Colors.CYAN + "Student System (l/r/x): " + Colors.RESET);
         }
         System.out.println(Colors.YELLOW + "Thank You" + Colors.RESET);
 
@@ -244,12 +249,13 @@ public class University implements Serializable {
 
     // This Function is incomplete & later to be moved to admin class
     private void adminMenu() {
-        System.out.print(Colors.BLUE + "Admin System (c/g/p/r/s/x): " + Colors.RESET);
+        System.out.print(Colors.CYAN + "Admin System (c/g/p/r/s/x): " + Colors.RESET);
         char c;
         while ((c = readChoice()) != 'x') {
             switch (c) {
                 case 'c':
-                    System.out.println("Are you sure you want to clear the databse (Y)es/ (N)o");
+                    System.out.println(
+                            Colors.RED + "Are you sure you want to clear the databse (Y)es/ (N)o" + Colors.RESET);
                     char charac = In.nextChar();
 
                     while (charac != 'Y' || charac != 'N') {
@@ -258,8 +264,9 @@ public class University implements Serializable {
                         else if (charac == 'N')
                             break;
                         else {
-                            System.out.println("Y - Yes | N - No");
-                            System.out.println("Are you sure you want to clear the databse (Y)es/ (N)o");
+                            System.out.println(Colors.YELLOW + "Y - Yes | N - No" + Colors.RESET);
+                            System.out.println(Colors.RED + "Are you sure you want to clear the databse (Y)es/ (N)o"
+                                    + Colors.RESET);
                             charac = In.nextChar();
                         }
                     }
@@ -280,7 +287,7 @@ public class University implements Serializable {
                     if (students.isEmpty())
                         System.out.println("Nothing to display");
                     else {
-                        System.out.println("Student List");
+                        System.out.println(Colors.YELLOW + "Student List" + Colors.RESET);
                         for (Student s : students) {
                             System.out.println(s.toString());
                         }
@@ -290,7 +297,7 @@ public class University implements Serializable {
                     // Help menu
                     break;
             }
-            System.out.print(Colors.BLUE + "Admin System (c/g/p/r/s/x): " + Colors.RESET);
+            System.out.print(Colors.CYAN + "Admin System (c/g/p/r/s/x): " + Colors.RESET);
         }
     }
     // System.out.println(Colors.YELLOW + "Thank You" + Colors.RESET);
@@ -298,7 +305,7 @@ public class University implements Serializable {
     // Function : Displays the (home) Menu
     public void displayMenu() {
         char c;
-        System.out.print(Colors.BLUE + "University System: (A)dmin, (S)tudent or X: " + Colors.RESET);
+        System.out.print(Colors.CYAN + "University System: (A)dmin, (S)tudent or X: " + Colors.RESET);
         while ((c = readChoice()) != 'X') {
             switch (c) {
                 case 'A':
@@ -311,7 +318,7 @@ public class University implements Serializable {
                     // Help menu
                     break;
             }
-            System.out.print(Colors.BLUE + "University System: (A)dmin, (S)tudent or X: " + Colors.RESET);
+            System.out.print(Colors.CYAN + "University System: (A)dmin, (S)tudent or X: " + Colors.RESET);
         }
         System.out.println(Colors.YELLOW + "Thank You" + Colors.RESET);
     }
