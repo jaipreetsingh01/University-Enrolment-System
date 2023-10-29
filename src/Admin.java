@@ -48,11 +48,23 @@ public class Admin {
                     break;
                 default:
                     // Help menu
-                    break;
+                    AdminHelpMenu();
+                    ;
             }
             System.out.print(Colors.CYAN + "\tAdmin System (c/g/p/r/s/x): " + Colors.RESET);
         }
     }
+
+    private void AdminHelpMenu() {
+        System.out.println(Colors.YELLOW + "\tMenu options" + Colors.RESET);
+        System.out.println(Colors.YELLOW + "\tc = Clear the database file" + Colors.RESET);
+        System.out.println(Colors.YELLOW + "\tg = Group students by grade" + Colors.RESET);
+        System.out.println(Colors.YELLOW + "\tp = Partition students into pass/fail" + Colors.RESET);
+        System.out.println(Colors.YELLOW + "\tr = Remove a student by ID" + Colors.RESET);
+        System.out.println(Colors.YELLOW + "\ts = Show the students from the data file" + Colors.RESET);
+        System.out.println(Colors.YELLOW + "\tx = Exit" + Colors.RESET);
+    }
+
     // System.out.println(Colors.YELLOW + "Thank You" + Colors.RESET);
 
 }

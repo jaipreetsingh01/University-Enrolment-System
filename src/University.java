@@ -259,7 +259,7 @@ public class University {
                     s.viewEnrollment();
                     break;
                 default:
-                    // Help menu
+                    studentCourseHelpMenu();
                     break;
             }
             System.out.print(Colors.CYAN + "\t\tStudent Course Menu(c/e/r/s/x): " + Colors.RESET);
@@ -280,7 +280,7 @@ public class University {
                     studentRegister();
                     break;
                 default:
-                    // Help menu
+                    studentHelpMenu();
                     break;
             }
             System.out.print(Colors.CYAN + "\tStudent System (l/r/x): " + Colors.RESET);
@@ -307,10 +307,35 @@ public class University {
                     break;
                 default:
                     // Help menu
+                    displayHelpMenu();
                     break;
             }
             System.out.print(Colors.CYAN + "University System: (A)dmin, (S)tudent or X: " + Colors.RESET);
         }
         System.out.println(Colors.YELLOW + "Thank You" + Colors.RESET);
     }
+
+    private void studentCourseHelpMenu() {
+        System.out.println(Colors.YELLOW + "\t\tMenu options" + Colors.RESET);
+        System.out.println(Colors.YELLOW + "\t\tc = Change password" + Colors.RESET);
+        System.out.println(Colors.YELLOW + "\t\te = Enroll in a subject" + Colors.RESET);
+        System.out.println(Colors.YELLOW + "\t\tr = Remove from a subject" + Colors.RESET);
+        System.out.println(Colors.YELLOW + "\t\ts = Show current enrollments" + Colors.RESET);
+        System.out.println(Colors.YELLOW + "\t\tx = Exit" + Colors.RESET);
+    }
+
+    private void studentHelpMenu() {
+        System.out.println(Colors.YELLOW + "\tMenu options");
+        System.out.println(Colors.YELLOW + "\tl = Login into student course menu");
+        System.out.println(Colors.YELLOW + "\tr = Register as a new student");
+        System.out.println(Colors.YELLOW + "\tx = Exit");
+    }
+
+    private void displayHelpMenu() {
+        System.out.println(Colors.YELLOW + "Menu options");
+        System.out.println(Colors.YELLOW + "A = Admin menu");
+        System.out.println(Colors.YELLOW + "S = Student menu");
+        System.out.println(Colors.YELLOW + "X = Exit");
+    }
+
 }
