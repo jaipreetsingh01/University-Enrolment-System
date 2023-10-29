@@ -106,19 +106,6 @@ public class Student implements Serializable {
         // REMEBER TO CALL DATA SAVE FROM UNIVERSITY
     }
 
-    private Subject findSubject(String ID) {
-        for (Subject sub : this.enrolledSubjects) {
-            if (sub.match(ID)) {
-                return sub;
-            }
-        }
-        return null;
-    }
-
-    public boolean match(String email, String password) {
-        return (this.email.equals(email) && this.password.equals(password));
-    }
-
     public void withdrawSubject() {
         if (this.enrolledSubjects.size() > 1) {
             System.out.print("Remove subject by ID: ");
@@ -155,10 +142,24 @@ public class Student implements Serializable {
         return (this.studentID.equals(ID));
     }
 
+    private Subject findSubject(String ID) {
+        for (Subject sub : this.enrolledSubjects) {
+            if (sub.match(ID)) {
+                return sub;
+            }
+        }
+        return null;
+    }
+
+    public boolean match(String email, String password) {
+        return (this.email.equals(email) && this.password.equals(password));
+    }
+
     public String toString() {
         calculateAverageGrade();
         calculateAverageMarks();
         return String.format("%s :: %s --> Email: %s", this.name, this.studentID,
                 this.email);
     }
+
 }

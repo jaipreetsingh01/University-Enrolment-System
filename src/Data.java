@@ -68,9 +68,7 @@ public class Data {
 }
 
 /*
- * Hey Guys ignore this block on commented code, i was following professor's
- * lecture
- * but i think this part is unneessary for scope of this assignment
+ * Hey Guys ignore this block on commented code
  */
 
 // try {

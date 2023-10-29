@@ -1,9 +1,8 @@
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class University implements Serializable {
+public class University {
     private List<Student> students;
     // private List<Subject> subjects;
     private Admin admin;
@@ -17,68 +16,6 @@ public class University implements Serializable {
         admin = new Admin();
         Data.init();
         students = Data.readStudents();
-    }
-
-    private String generateID() {
-        {
-            String Chars = "0123456789";
-
-            // Define the minimum length of the ID
-            int minLength = 6;
-            // Generate the random ID
-            StringBuilder randomID = new StringBuilder();
-            Random random = new Random();
-            // Ensure the ID has at least 6 characters
-            while (randomID.length() < minLength) {
-                int index = random.nextInt(Chars.length());
-                randomID.append(Chars.charAt(index));
-            }
-            return randomID.toString();
-
-        }
-    }
-
-    private void deleteStudentData(Student s) {
-        students.remove(s);
-        Data.saveStudentData(students);
-    }
-
-    private Student findStudentbyID() {
-        System.out.print("Remove by ID: ");
-        String studentID = In.nextLine();
-        students = Data.readStudents();
-
-        for (Student s : students) {
-            if (s.matchbyID(studentID)) {
-                System.out.println(Colors.YELLOW + "Removing Student " + studentID + " Account" + Colors.RESET);
-                return s;
-            }
-        }
-        System.out.println(Colors.RED + "Student " + studentID + " does not exist" + Colors.RESET);
-        return null;
-    }
-
-    private void deleteAllStudentData() {
-        students = Data.readStudents();
-        System.out.println(Colors.YELLOW + "Clearing Student Database" + Colors.RESET);
-        Data.deleteAllStudentData(students);
-
-    }
-
-    // Return character entered by user
-    private char readChoice() {
-        return In.nextChar();
-    }
-
-    // return student object if there is a match or null if no match.
-    private Student findStudent(String email, String password) {
-        students = Data.readStudents();
-        for (Student s : students) {
-            if (s.match(email, password)) {
-                return s;
-            }
-        }
-        return null;
     }
 
     // RETURN TRUE/FALSE depending if pattern is correct
@@ -98,7 +35,60 @@ public class University implements Serializable {
         return password.matches(passwordPattern);
     }
 
-    private static void groupByGrade() {
+    private Student findStudentbyID() {
+        System.out.print("Remove by ID: ");
+        String studentID = In.nextLine();
+        students = Data.readStudents();
+
+        for (Student s : students) {
+            if (s.matchbyID(studentID)) {
+                System.out.println(Colors.YELLOW + "Removing Student " + studentID + " Account" + Colors.RESET);
+
+                return s;
+            }
+        }
+        System.out.println(Colors.RED + "Student " + studentID + " does not exist" + Colors.RESET);
+        return null;
+    }
+
+    private Student findStudent(String email, String password) {
+        students = Data.readStudents();
+        for (Student s : students) {
+            if (s.match(email, password)) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    // Return character entered by user
+    // public char readChoice() {
+    // return In.nextChar();
+    // }
+
+    // return student object if there is a match or null if no match.
+
+    public void clearDatabase() {
+        System.out.println(Colors.RED + "Are you sure you want to clear the databse (Y)es/ (N)o" + Colors.RESET);
+        char charac = In.nextChar();
+
+        while (charac != 'Y' || charac != 'N') {
+            if (charac == 'Y') {
+                students = Data.readStudents();
+                System.out.println(Colors.YELLOW + "Clearing Student Database" + Colors.RESET);
+                Data.deleteAllStudentData(students);
+            } else if (charac == 'N')
+                break;
+            else {
+                System.out.println(Colors.YELLOW + "Y - Yes | N - No" + Colors.RESET);
+                System.out.println(Colors.RED + "Are you sure you want to clear the databse (Y)es/ (N)o"
+                        + Colors.RESET);
+                charac = In.nextChar();
+            }
+        }
+    }
+
+    public void groupByGrade() {
         List<Student> students = Data.readStudents();
         String[] gradeLetters = { "HD", "D", "CR", "P", "F" };
 
@@ -117,7 +107,7 @@ public class University implements Serializable {
         }
     }
 
-    private static void partitionPassFail() {
+    public void partitionPassFail() {
         List<Student> students = Data.readStudents();
 
         List<Student> studentPassList = new ArrayList<>();
@@ -144,10 +134,49 @@ public class University implements Serializable {
 
         for (Student student : studentPassList) {
             PassList.add(student.nameGetter() + " :: " + student.IDGetter() + "--> GRADE: "
-                    + student.getterAverageGrade() + " - MARK: " + student.getterAverageMarks() + ", ");
+                    + student.getterAverageGrade() + " - MARK: " + student.getterAverageMarks());
         }
         System.out.println("FAIL --> " + FailList.toString());
         System.out.println("PASS --> " + PassList.toString());
+    }
+
+    public void removeStudentByID() {
+        Student toRemove = findStudentbyID();
+        if (toRemove != null) {
+            // System.out.println("Reached inside here");
+            // students = Data.readStudents();
+            students.remove(toRemove);
+            Data.saveStudentData(students);
+        }
+    }
+
+    public void displayStudentsList() {
+        students = Data.readStudents();
+        if (students.isEmpty())
+            System.out.println("<Nothing to display>");
+        else {
+            System.out.println(Colors.YELLOW + "Student List" + Colors.RESET);
+            for (Student s : students) {
+                System.out.println(s.toString());
+            }
+        }
+    }
+
+    private String generateID() {
+        {
+            String Chars = "0123456789";
+            // Define the minimum length of the ID
+            int minLength = 6;
+            // Generate the random ID
+            StringBuilder randomID = new StringBuilder();
+            Random random = new Random();
+            // Ensure the ID has at least 6 characters
+            while (randomID.length() < minLength) {
+                int index = random.nextInt(Chars.length());
+                randomID.append(Chars.charAt(index));
+            }
+            return randomID.toString();
+        }
     }
 
     private void studentRegister() {
@@ -179,7 +208,7 @@ public class University implements Serializable {
 
     }
 
-    public void studentLogin() {
+    private void studentLogin() {
         System.out.println(Colors.GREEN + "Student Sign In" + Colors.RESET);
         System.out.print("Email: ");
         String email = In.nextLine();
@@ -197,10 +226,10 @@ public class University implements Serializable {
             System.out.println(Colors.RED + "Incorrect email or password format" + Colors.RESET);
     }
 
-    public void studentCourseMenu(Student s) {
+    private void studentCourseMenu(Student s) {
         System.out.print(Colors.CYAN + "Student Course Menu(c/e/r/s/x): " + Colors.RESET);
         char c;
-        while ((c = readChoice()) != 'x') {
+        while ((c = In.nextChar()) != 'x') {
             switch (c) {
                 case 'c':
                     s.updatePassword();
@@ -225,11 +254,10 @@ public class University implements Serializable {
         }
     }
 
-    // This Function is incomplete & might move to student class
     private void studentMenu() {
         System.out.print(Colors.CYAN + "Student System (l/r/x): " + Colors.RESET);
         char c;
-        while ((c = readChoice()) != 'x') {
+        while ((c = In.nextChar()) != 'x') {
             switch (c) {
                 case 'l':
                     studentLogin();
@@ -247,69 +275,19 @@ public class University implements Serializable {
 
     }
 
-    // This Function is incomplete & later to be moved to admin class
-    private void adminMenu() {
-        System.out.print(Colors.CYAN + "Admin System (c/g/p/r/s/x): " + Colors.RESET);
-        char c;
-        while ((c = readChoice()) != 'x') {
-            switch (c) {
-                case 'c':
-                    System.out.println(
-                            Colors.RED + "Are you sure you want to clear the databse (Y)es/ (N)o" + Colors.RESET);
-                    char charac = In.nextChar();
-
-                    while (charac != 'Y' || charac != 'N') {
-                        if (charac == 'Y')
-                            deleteAllStudentData();
-                        else if (charac == 'N')
-                            break;
-                        else {
-                            System.out.println(Colors.YELLOW + "Y - Yes | N - No" + Colors.RESET);
-                            System.out.println(Colors.RED + "Are you sure you want to clear the databse (Y)es/ (N)o"
-                                    + Colors.RESET);
-                            charac = In.nextChar();
-                        }
-                    }
-                    // Data.saveStudentData(students);
-                    break;
-                case 'g':
-                    groupByGrade();
-                    break;
-                case 'p':
-                    partitionPassFail();
-                    break;
-                case 'r':
-                    Student toRemove = findStudentbyID();
-                    deleteStudentData(toRemove);
-                    break;
-                case 's':
-                    students = Data.readStudents();
-                    if (students.isEmpty())
-                        System.out.println("Nothing to display");
-                    else {
-                        System.out.println(Colors.YELLOW + "Student List" + Colors.RESET);
-                        for (Student s : students) {
-                            System.out.println(s.toString());
-                        }
-                    }
-                    break;
-                default:
-                    // Help menu
-                    break;
-            }
-            System.out.print(Colors.CYAN + "Admin System (c/g/p/r/s/x): " + Colors.RESET);
-        }
+    private void adminMenu(University uni) {
+        // students = Data.readStudents();
+        admin.adminMenu(uni);
     }
-    // System.out.println(Colors.YELLOW + "Thank You" + Colors.RESET);
 
     // Function : Displays the (home) Menu
     public void displayMenu() {
         char c;
         System.out.print(Colors.CYAN + "University System: (A)dmin, (S)tudent or X: " + Colors.RESET);
-        while ((c = readChoice()) != 'X') {
+        while ((c = In.nextChar()) != 'X') {
             switch (c) {
                 case 'A':
-                    adminMenu();
+                    adminMenu(this);
                     break;
                 case 'S':
                     studentMenu();
