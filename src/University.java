@@ -37,18 +37,18 @@ public class University {
     // Uses match function in student, return student if ID matches from list/ or
     // Null
     private Student findStudentbyID() {
-        System.out.print("Remove by ID: ");
+        System.out.print("\tRemove by ID: ");
         String studentID = In.nextLine();
         students = Data.readStudents();
 
         for (Student s : students) {
             if (s.matchbyID(studentID)) {
-                System.out.println(Colors.YELLOW + "Removing Student " + studentID + " Account" + Colors.RESET);
+                System.out.println(Colors.YELLOW + "\tRemoving Student " + studentID + " Account" + Colors.RESET);
 
                 return s;
             }
         }
-        System.out.println(Colors.RED + "Student " + studentID + " does not exist" + Colors.RESET);
+        System.out.println(Colors.RED + "\tStudent " + studentID + " does not exist" + Colors.RESET);
         return null;
     }
 
