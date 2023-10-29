@@ -29,7 +29,7 @@ public class Subject implements Serializable {
 
     private String generateRandomID() {
         Random random = new Random();
-        int ID = random.nextInt(900) + 100;
+        int ID = random.nextInt(999) + 1;
         return String.format("%03d", ID);
     }
 
@@ -62,6 +62,6 @@ public class Subject implements Serializable {
     public String toString() {
         // System.out.printf("Subject ID: %s -- Mark = %d -- Grade = %s", this.ID,
         // this.mark, this.grade);
-        return String.format("[ Subject::%s -- Mark = %d -- Grade = %s ]", this.ID, this.mark, this.grade);
+        return String.format("\t\t[ Subject::%s -- Mark = %d -- Grade =    %s ]", this.ID, this.mark, this.grade);
     }
 }

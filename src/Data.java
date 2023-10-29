@@ -13,15 +13,14 @@ public class Data {
             File file = new File(filename);
 
             if (!file.exists()) {
-                file.createNewFile();
+                file.createNewFile(); // creates the empty file with name specified in line 13-> line 8
+                // For writing raw data to the file
                 FileOutputStream fileOut = new FileOutputStream(filename);
                 ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-                objectOut.writeObject(students);
+                objectOut.writeObject(students); // write students to the stream
                 objectOut.close();
                 fileOut.close();
-                // System.out.println(
-                // file.createNewFile() ? "File " + filename + " Initialized"
-                // : "Cannot initialize file: " + filename);
+
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -43,9 +42,9 @@ public class Data {
 
     public static List<Student> readStudents() {
         List<Student> students = null;
-        try (FileInputStream fileIn = new FileInputStream(filename)) {
+        try (FileInputStream fileIn = new FileInputStream(filename)) { // READ data as stream of bytes
             ObjectInputStream objIn = new ObjectInputStream(fileIn);
-            students = (List<Student>) objIn.readObject();
+            students = (List<Student>) objIn.readObject(); // CAST as list of students
             objIn.close();
             fileIn.close();
             return students;

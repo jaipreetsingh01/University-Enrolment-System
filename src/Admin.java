@@ -27,7 +27,7 @@ public class Admin {
     }
 
     public void adminMenu(University uni) {
-        System.out.print(Colors.CYAN + "Admin System (c/g/p/r/s/x): " + Colors.RESET);
+        System.out.print(Colors.CYAN + "\tAdmin System (c/g/p/r/s/x): " + Colors.RESET);
         char c;
         while ((c = In.nextChar()) != 'x') {
             switch (c) {
@@ -50,7 +50,7 @@ public class Admin {
                     // Help menu
                     break;
             }
-            System.out.print(Colors.CYAN + "Admin System (c/g/p/r/s/x): " + Colors.RESET);
+            System.out.print(Colors.CYAN + "\tAdmin System (c/g/p/r/s/x): " + Colors.RESET);
         }
     }
     // System.out.println(Colors.YELLOW + "Thank You" + Colors.RESET);

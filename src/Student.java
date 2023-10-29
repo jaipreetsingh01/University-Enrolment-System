@@ -12,16 +12,18 @@ public class Student implements Serializable {
     private float averageMarks;
     private String averageGrade;
 
+    // student constructor
     public Student(String name, String email, String password, String studentID) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.studentID = studentID;
         this.enrolledSubjects = new ArrayList<>();
-        this.averageMarks = 0;
-        calculateAverageGrade();
+        this.averageMarks = 0; // this is until student enrolls into his first subject
+        calculateAverageGrade(); // calculates F till student enrolls
     }
 
+    // GETTERS
     public String studentEmailGetter() {
         return this.email;
     }
@@ -36,7 +38,6 @@ public class Student implements Serializable {
 
     public String IDGetter() {
         return this.studentID;
-
     }
 
     public List<Subject> getSubjectList() {
@@ -51,6 +52,7 @@ public class Student implements Serializable {
         return this.averageGrade;
     }
 
+    // Basic n+n+.../ number of n
     private void calculateAverageMarks() {
         float average = 0;
         for (Subject s : this.enrolledSubjects) {
@@ -75,16 +77,17 @@ public class Student implements Serializable {
     }
 
     public void updatePassword() {
-        System.out.print(Colors.YELLOW + "Updating Password: " + Colors.RESET);
-        System.out.print("New Password: ");
+        System.out.println(Colors.YELLOW + "\t\tUpdating Password" + Colors.RESET);
+        System.out.print("\t\tNew Password: ");
         String newPass = In.nextLine();
 
-        System.out.print("Confirm Password: ");
+        System.out.print("\t\tConfirm Password: ");
         String confrimNewPass = In.nextLine();
 
+        // until confirm passowrd is same as new password
         while (!newPass.equals(confrimNewPass)) {
-            System.out.println(Colors.RED + "Password does not match - try again" + Colors.RESET);
-            System.out.print("Confirm Password: ");
+            System.out.println(Colors.RED + "\t\tPassword does not match - try again" + Colors.RESET);
+            System.out.print("\t\tConfirm Password: ");
             confrimNewPass = In.nextLine();
         }
 
@@ -95,45 +98,47 @@ public class Student implements Serializable {
         if (this.enrolledSubjects.size() < 4) {
             Subject subject = new Subject();
             this.enrolledSubjects.add(subject);
-            System.out.println(Colors.YELLOW + "Enrolling in subject-" + subject.getID() + Colors.RESET);
-            System.out.println(Colors.YELLOW + "You are now enrolled in " + this.enrolledSubjects.size()
+            System.out.println(Colors.YELLOW + "\t\tEnrolling in subject-" + subject.getID() + Colors.RESET);
+            System.out.println(Colors.YELLOW + "\t\tYou are now enrolled in " + this.enrolledSubjects.size()
                     + " out of 4 subjects" + Colors.RESET);
-            this.calculateAverageMarks();
+            this.calculateAverageMarks(); // RECALCULATE
             this.calculateAverageGrade();
         } else
-            System.out.println(Colors.RED + "Students are allowed to enroll in 4 subjects only" + Colors.RESET);
+            System.out.println(Colors.RED + "\t\tStudents are allowed to enroll in 4 subjects only" + Colors.RESET);
 
         // REMEBER TO CALL DATA SAVE FROM UNIVERSITY
     }
 
     public void withdrawSubject() {
         if (this.enrolledSubjects.size() > 1) {
-            System.out.print("Remove subject by ID: ");
+            System.out.print("\t\tRemove subject by ID: ");
             String ID = In.nextLine();
 
             Subject subjectToRemove = this.findSubject(ID);
             if (subjectToRemove != null) {
                 this.enrolledSubjects.remove(subjectToRemove);
-                System.out.println(Colors.YELLOW + "Dropping Subject-" + ID + Colors.RESET);
-                System.out.println(Colors.YELLOW + "You are now enrolled in " + this.enrolledSubjects.size()
+                System.out.println(Colors.YELLOW + "\t\tDropping Subject-" + ID + Colors.RESET);
+                System.out.println(Colors.YELLOW + "\t\tYou are now enrolled in " + this.enrolledSubjects.size()
                         + " out of 4 Subjects" + Colors.RESET);
-                this.calculateAverageMarks();
+                this.calculateAverageMarks(); // RECALCULATE
                 this.calculateAverageGrade();
-            } else
-                System.out.println(Colors.RED + "Subject with that ID does not exist" + Colors.RESET);
+            } else // if no subject with that id
+                System.out.println(Colors.RED + "\t\tSubject with ID " + ID + " does not exist" + Colors.RESET);
 
         } else
             System.out
-                    .println(Colors.RED + "Students are required to be enrolled in minimum one subject" + Colors.RESET);
+                    .println(Colors.RED + "\t\tStudents are required to be enrolled in minimum one subject"
+                            + Colors.RESET);
     }
 
     public void viewEnrollment() {
         if (enrolledSubjects.isEmpty()) {
-            System.out.println(Colors.YELLOW + "Showing 0 Subjects" + Colors.RESET);
+            System.out.println(Colors.YELLOW + "\t\tShowing 0 Subjects" + Colors.RESET);
         } else {
-            System.out.println(Colors.YELLOW + "Showing " + this.enrolledSubjects.size() + " Subjects" + Colors.RESET);
+            System.out.println(
+                    Colors.YELLOW + "\t\tShowing " + this.enrolledSubjects.size() + " Subjects" + Colors.RESET);
             for (Subject subject : enrolledSubjects) {
-                System.out.println(subject.toString());
+                System.out.println(subject.toString()); // Subjecy to string
             }
         }
     }
@@ -158,7 +163,7 @@ public class Student implements Serializable {
     public String toString() {
         calculateAverageGrade();
         calculateAverageMarks();
-        return String.format("%s :: %s --> Email: %s", this.name, this.studentID,
+        return String.format("\t%s :: %s --> Email: %s", this.name, this.studentID,
                 this.email);
     }
 
